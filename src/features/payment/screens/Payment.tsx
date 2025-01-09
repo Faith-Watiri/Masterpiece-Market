@@ -6,7 +6,7 @@ import {BASE_URL} from '../../../lib/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Loading} from '../../../components';
 import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack'; // Correct import
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useDispatch} from 'react-redux';
 import {clearCart} from '../../cart/slices/cart.slice';
 
@@ -121,6 +121,66 @@ export function PaymentScreen({route}: PaymentScreenRouteParams) {
     }
   }, [fetchPaymentSheetParams, initPaymentSheet]);
 
+  const sendReceipt = async () => {
+    console.log('Sending receipt...');
+    try {
+      const token = await AsyncStorage.getItem('@access_token');
+      if (!token) {
+        throw new Error('No token found. Please log in.');
+      }
+
+      // Fetch full art details based on artIds
+      const artDetailsResponse = await fetch(`${BASE_URL}/art/details`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({artIds}),
+      });
+
+      const artDetails = await artDetailsResponse.json();
+
+      if (!artDetailsResponse.ok) {
+        console.error('Error fetching art details:', artDetails);
+        throw new Error(artDetails.message || 'Failed to fetch art details');
+      }
+
+      // Prepare payload for the receipt
+      const payload = {
+        amount: totalPrice * 100, // Convert to cents if needed
+        currency: 'kes',
+        artDetails, // Send full art details
+      };
+
+      const response = await fetch(`${BASE_URL}/payment-sheets/send-receipt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Backend Error:', data);
+        throw new Error(data.message || 'Failed to send receipt');
+      }
+
+      console.log('Receipt sent successfully:', data);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error sending receipt:', error.message);
+        Alert.alert('Error', error.message);
+      } else {
+        console.error('Unexpected error:', error);
+        Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+      }
+    }
+  };
+
   useEffect(() => {
     initializePaymentSheet();
   }, [initializePaymentSheet]);
@@ -135,7 +195,8 @@ export function PaymentScreen({route}: PaymentScreenRouteParams) {
         Alert.alert('Payment Error', error.message);
       } else {
         console.log('Payment completed successfully.');
-        dispatch(clearCart());
+        await sendReceipt(); // Send receipt after payment is confirmed
+        dispatch(clearCart()); // Clear cart
         Alert.alert('Success', 'Your payment was confirmed!', [
           {
             text: 'OK',
