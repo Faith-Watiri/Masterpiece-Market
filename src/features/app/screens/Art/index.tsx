@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {Image, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {AppLayout} from '../../components';
@@ -24,7 +25,7 @@ type SingleArtProps = {
     params: {
       data: {
         id: number;
-        art_name: string;
+        name: string;
         price: number;
         image: string;
         userId: number;
@@ -50,7 +51,7 @@ export function SingleArt({route}: SingleArtProps) {
     try {
       const cartItem = {
         id: item.id,
-        name: item.art_name,
+        name: item.name,
         price: item.price,
         image: item.image,
         artist: artistText,

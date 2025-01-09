@@ -4,7 +4,7 @@ import {AppLayout} from '../../components';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'; // Imported MaterialIcons
 import FeatherIcon from 'react-native-vector-icons/Feather'; // Imported Feather
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Digital from '../../../../assets/digital.jpg';
+// import Digital from '../../../../assets/digital.jpg';
 import {useNavigation} from '@react-navigation/native';
 import {PrimaryButton} from '../../../../components';
 import LogoutIcon from 'react-native-vector-icons/SimpleLineIcons';
@@ -99,7 +99,7 @@ export function UserProfile() {
         <FeatherIcon name="arrow-left" size={24} color="black" />
 
         <View className="items-center space-y-3 mt-10">
-          <Image source={Digital} className="h-14 w-14 rounded-full" />
+          {/* {<Image source={Digital} className="h-14 w-14 rounded-full" />} */}
           <Text className="text-primary text-4xl font-bold">{name}</Text>
           <Text className="text-tertiary text-lg">{email}</Text>
           <Text className="text-tertiary text-lg">{role}</Text>

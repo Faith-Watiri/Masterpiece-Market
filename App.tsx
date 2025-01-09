@@ -14,7 +14,7 @@ const AppContent = () => {
 
   return (
     <NavigationContainer>
-      <StripeProvider publishableKey="pk_test_51N41wCKvbhlMKkRFilEcEs3gF0FhFXA4df4vKJGhUpuPQGhNAscwUuuZNOpfCcwsdXtY9x02Ygm3krayWsJftZdX00IL8Mhy5W">
+      <StripeProvider publishableKey="pk_test_51NptlpCnjWVnOWMhRmG87tebKO8jTyibyjW5VHHQXWXKZnlboNJdb4wtTFlcXiRrB2zknzu1fqkkhNnU0tnzAEI900xZVtIHc4">
         <StatusBar
           barStyle="light-content"
           animated={true}

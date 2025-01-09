@@ -62,7 +62,6 @@ export function Login() {
           email: profileData.email,
           name: profileData.name,
           role: profileData.role,
-          isLoggedIn: true,
         }),
       );
 

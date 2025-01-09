@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {FlatList, Text, TouchableHighlight, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {AppLayout} from '../components';
@@ -7,7 +8,7 @@ import {BASE_URL} from '../../../lib/constants';
 import ArtCard from '../../../components/Elements/Cards/ArtCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Loading} from '../../../components';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {selectCart} from '../../cart/slices/cart.slice';
 import axios from 'axios';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -31,8 +32,6 @@ export type ArtItem = {
 export function HomeScreen() {
   const [art, setArt] = useState<ArtItem[]>([]); // Type inferred for art
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setToken] = useState<string | null>(null);
-  const dispatch = useDispatch();
   const {name} = useUserAuth();
 
   const navigation = useNavigation<HomeScreenNavigationProp>();
@@ -67,14 +66,12 @@ export function HomeScreen() {
     }
   };
 
-  // Fetch token and art data when component mounts
   useEffect(() => {
     const fetchTokenAndArt = async () => {
       setIsLoading(true);
       try {
         const storedToken = await AsyncStorage.getItem('@access_token');
         if (storedToken) {
-          setToken(storedToken);
           await getArt(storedToken);
         } else {
           console.log('No token found in AsyncStorage');
@@ -128,6 +125,8 @@ export function HomeScreen() {
           columnWrapperStyle={{gap: 8}} // Adjust the spacing
           renderItem={({item}) => (
             <ArtCard
+              key={item.id}
+              id={item.id}
               name={item.art_name}
               artist={item.artist}
               price={item.price}

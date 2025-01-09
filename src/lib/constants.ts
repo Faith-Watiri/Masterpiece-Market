@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://34.170.91.15:3000';
+export const BASE_URL = 'https://art-galore-644897937403.us-west2.run.app';

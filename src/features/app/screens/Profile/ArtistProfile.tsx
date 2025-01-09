@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
 import {FlatList, Text, TouchableHighlight, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {AppLayout} from '../../components';
@@ -7,7 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Loading} from '../../../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
-import {setSignOut, useUserAuth} from '../../../auth/slices/auth.slice'; // Imported auth hooks/actions
+import {setSignOut, useUserAuth} from '../../../auth/slices/auth.slice';
 import {BASE_URL} from '../../../../lib/constants';
 import ArtCard from '../../../../components/Elements/Cards/ArtCard';
 import {ArtItem} from '../Home';
@@ -25,23 +27,23 @@ type ArtProfileScreenNavigationProp = StackNavigationProp<
 >;
 
 export function ProfileScreen() {
-  const {name, email, userId} = useUserAuth(); // Get user profile info
+  const {name, email, userId} = useUserAuth();
   const dispatch = useDispatch();
   const navigation = useNavigation<ArtProfileScreenNavigationProp>();
-  const [art, setArt] = useState<ArtItem[]>([]); // State to hold user's artworks
+  const [art, setArt] = useState<ArtItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLogout = async () => {
-    await AsyncStorage.clear(); // Clear only the access token
-    dispatch(setSignOut()); // Trigger logout action
+    await AsyncStorage.clear();
+    dispatch(setSignOut());
   };
 
   const getInitials = (user_name: string) => {
     const nameParts = user_name.split(' ');
     if (nameParts.length > 1) {
-      return nameParts[0][0] + nameParts[1][0]; // Get first letter of each word
+      return nameParts[0][0] + nameParts[1][0];
     } else {
-      return nameParts[0][0]; // Get first letter of the single word
+      return nameParts[0][0];
     }
   };
 
@@ -62,7 +64,7 @@ export function ProfileScreen() {
       }
 
       const data = await response.json();
-      setArt(data); // Set the fetched art data
+      setArt(data);
     } catch (error) {
       console.log('Error fetching user art:', error);
     } finally {
@@ -86,7 +88,7 @@ export function ProfileScreen() {
     };
 
     fetchTokenAndArt();
-  }, [userId]);
+  }, [getUserArt, userId]);
 
   if (isLoading) {
     return <Loading />;

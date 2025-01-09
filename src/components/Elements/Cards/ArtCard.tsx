@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   Dimensions,
   ImageBackground,
@@ -13,6 +14,7 @@ import {addToCart} from '../../../features/cart/slices/cart.slice';
 import {addToFavorites} from '../../../features/app/screens/Art/slices/favorites.slice';
 
 type ArtCardProps = {
+  id: number;
   name: string;
   price?: number;
   image: string;
@@ -21,6 +23,7 @@ type ArtCardProps = {
 };
 
 export default function ArtCard({
+  id,
   name,
   price,
   image,
@@ -33,11 +36,11 @@ export default function ArtCard({
 
   const handleAddToCart = () => {
     const cartItem = {
-      id: Math.random(), // You should replace this with a unique item ID from your data
-      name: name,
-      price: price,
-      image: image,
-      artist: artist,
+      id, // Use the actual id
+      name,
+      price,
+      image,
+      artist,
       quantity: 1,
     };
 
@@ -54,8 +57,8 @@ export default function ArtCard({
 
   const handleAddToFavorites = () => {
     const favoriteItem = {
-      id: Math.random(), // Replace with unique ID from your data
-      name: name,
+      id, // Use the actual id
+      name,
       photo: image,
     };
 
@@ -83,8 +86,7 @@ export default function ArtCard({
           borderRadius: 8,
           overflow: 'hidden',
         }}
-        blurRadius={1} // Add blur effect
-      >
+        blurRadius={1}>
         {/* Black overlay */}
         <View
           style={{
@@ -144,17 +146,6 @@ export default function ArtCard({
             </Text>
           )}
         </View>
-        {/*<TouchableHighlight*/}
-        {/*  style={{*/}
-        {/*    padding: 5,*/}
-        {/*    height: 24,*/}
-        {/*    width: 24,*/}
-        {/*    justifyContent: 'center',*/}
-        {/*    alignItems: 'center',*/}
-        {/*    borderRadius: 12,*/}
-        {/*  }}>*/}
-        {/*  <DotMenu name="dots-horizontal" size={15} color="black" />*/}
-        {/*</TouchableHighlight>*/}
       </View>
     </TouchableOpacity>
   );
